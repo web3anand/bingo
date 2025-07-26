@@ -10,10 +10,11 @@ export default function App() {
   const { address, isConnected } = useAccount();
   const { connect, connectors } = useConnect();
   const hasConnectors = Array.isArray(connectors) && connectors.length > 0;
+  const firstConnector = hasConnectors ? connectors[0] : undefined;
 
   const handleConnect = () => {
-    if (hasConnectors) {
-      connect({ connector: connectors[0] });
+    if (firstConnector) {
+      connect({ connector: firstConnector });
     }
   };
 
