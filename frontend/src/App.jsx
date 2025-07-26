@@ -9,9 +9,10 @@ import { useAccount, useConnect } from '@starknet-react/core';
 export default function App() {
   const { address, isConnected } = useAccount();
   const { connect, connectors } = useConnect();
+  const hasConnectors = Array.isArray(connectors) && connectors.length > 0;
 
   const handleConnect = () => {
-    if (connectors && connectors.length > 0) {
+    if (hasConnectors) {
       connect({ connector: connectors[0] });
     }
   };
@@ -20,7 +21,11 @@ export default function App() {
     <div style={{ padding: '2rem' }}>
       <h1>Bingo Dapp ✅</h1>
       {!isConnected ? (
-        <button onClick={handleConnect}>Connect Wallet</button>
+        hasConnectors ? (
+          <button onClick={handleConnect}>Connect Wallet</button>
+        ) : (
+          <p>Loading wallet connectors…</p>
+        )
       ) : (
         <p>Connected as {address}</p>
       )}
