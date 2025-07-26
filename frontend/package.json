@@ -9,8 +9,8 @@
   "dependencies": {
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "@starknet-react/core": "^1.0.6",
-    "starknet": "^5.5.0"
+    "@starknet-react/core": "^3.7.4",
+    "starknet": "^6.24.1"
   },
   "devDependencies": {
     "vite": "^4.4.0",
