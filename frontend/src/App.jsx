@@ -1,24 +1,32 @@
-import React, { useState } from 'react';
-import {
-  StarknetConfig,
-  useAccount,
-  useConnect,
-} from '@starknet-react/core';
+import React from 'react';
+import { useAccount, useConnect } from '@starknet-react/core';
 
 // A minimal Bingo front‑end using starknet‑react.  This file sets up the
 // Starknet provider with support for Argent X and Braavos wallets and
 // provides a placeholder UI that can be extended to implement the full
 // Bingo experience (lobby, room creation/joining, and the Bingo board).
 
-function BingoGame() {
+export default function App() {
   const { address, isConnected } = useAccount();
-  const { connect } = useConnect();
+  const { connect, connectors } = useConnect();
+  const hasConnectors = Array.isArray(connectors) && connectors.length > 0;
+  const firstConnector = hasConnectors ? connectors[0] : undefined;
+
+  const handleConnect = () => {
+    if (firstConnector) {
+      connect({ connector: firstConnector });
+    }
+  };
 
   return (
-    <div style={{ padding: '2rem', fontFamily: 'sans-serif' }}>
-      <h1>Starknet Bingo</h1>
+    <div style={{ padding: '2rem' }}>
+      <h1>Bingo Dapp ✅</h1>
       {!isConnected ? (
-        <button onClick={() => connect()}>Connect Wallet</button>
+        hasConnectors ? (
+          <button onClick={handleConnect}>Connect Wallet</button>
+        ) : (
+          <p>Loading wallet connectors…</p>
+        )
       ) : (
         <p>Connected as {address}</p>
       )}
@@ -30,19 +38,5 @@ function BingoGame() {
       */}
       <p style={{ marginTop: '1rem' }}>Multiplayer Bingo is coming soon!</p>
     </div>
-  );
-}
-
-export default function App() {
-  return (
-    <StarknetConfig
-      autoConnect={true}
-      connectorsOptions={{
-        argentX: {},
-        braavos: {},
-      }}
-    >
-      <BingoGame />
-    </StarknetConfig>
   );
 }
